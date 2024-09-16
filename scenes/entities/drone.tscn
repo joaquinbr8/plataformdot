@@ -1,0 +1,81 @@
+[gd_scene load_steps=12 format=3 uid="uid://dx7n74ernyawm"]
+
+[ext_resource type="PackedScene" uid="uid://b68vs0af4e7hi" path="res://scenes/entities/entity.tscn" id="1_f5hq4"]
+[ext_resource type="Texture2D" uid="uid://brbybbdwd8ykl" path="res://graphics/entities/drone.png" id="2_8qwkj"]
+[ext_resource type="Script" path="res://scenes/entities/drone.gd" id="2_sbiiw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f60jn"]
+radius = 8.06226
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7o14"]
+atlas = ExtResource("2_8qwkj")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d5qsp"]
+atlas = ExtResource("2_8qwkj")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oy4j5"]
+atlas = ExtResource("2_8qwkj")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwji7"]
+atlas = ExtResource("2_8qwkj")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k24hj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7o14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d5qsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oy4j5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwji7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 13.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kn7us"]
+radius = 83.5464
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j88jf"]
+radius = 11.0
+
+[node name="Drone" instance=ExtResource("1_f5hq4")]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("2_sbiiw")
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_f60jn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_k24hj")
+frame_progress = 0.344489
+
+[node name="PlayerDectionArea" type="Area2D" parent="." index="3"]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDectionArea" index="0"]
+shape = SubResource("CircleShape2D_kn7us")
+debug_color = Color(0.619045, 0.527824, 0.248211, 0.42)
+
+[node name="CollisionDetectionArea" type="Area2D" parent="." index="4"]
+collision_layer = 16
+collision_mask = 23
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionDetectionArea" index="0"]
+shape = SubResource("CircleShape2D_j88jf")
+debug_color = Color(0.829786, 0.351708, 0.470272, 0.42)
+
+[connection signal="body_entered" from="PlayerDectionArea" to="." method="_on_player_dection_area_body_entered"]
+[connection signal="body_entered" from="CollisionDetectionArea" to="." method="_on_collision_detection_area_body_entered"]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dq45m3gjdo1gy"]
+
+[ext_resource type="Script" path="res://scenes/objects/transition_gates.gd" id="1_7i0cm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hy4t8"]
+size = Vector2(24, 40.375)
+
+[node name="TransitionGates" type="Area2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_7i0cm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_hy4t8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

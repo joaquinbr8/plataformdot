@@ -1,0 +1,85 @@
+[gd_scene load_steps=10 format=3 uid="uid://cl74b3n23jnjt"]
+
+[ext_resource type="PackedScene" uid="uid://b68vs0af4e7hi" path="res://scenes/entities/entity.tscn" id="1_3xfb3"]
+[ext_resource type="Script" path="res://scenes/entities/playerone/player.gd" id="2_yrl14"]
+[ext_resource type="Texture2D" uid="uid://clgaqns85oxlp" path="res://graphics/guns/crosshair.png" id="4_uwyhj"]
+[ext_resource type="PackedScene" uid="uid://b2u8jwnrxslgq" path="res://scenes/entities/playerone/player_graph.tscn" id="5_2t3gs"]
+[ext_resource type="Script" path="res://scenes/crosshair.gd" id="5_36sbw"]
+[ext_resource type="Texture2D" uid="uid://djbe8xgpgw7dj" path="res://graphics/guns/projectiles/explosion2.png" id="6_hjyll"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ymup8"]
+radius = 4.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kxl61"]
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jrwab"]
+particle_flag_disable_z = true
+initial_velocity_min = 200.0
+initial_velocity_max = 280.0
+gravity = Vector3(0, 0, 0)
+anim_speed_min = 0.32
+anim_speed_max = 1.99
+
+[node name="Player" groups=["Player"] instance=ExtResource("1_3xfb3")]
+collision_layer = 3
+collision_mask = 13
+script = ExtResource("2_yrl14")
+speed = 200
+acceleration = 400
+friction = 900
+dash_cooldown = 0.5
+jump_strength = 360
+gravity = 600
+terminal_velocity = 500
+crosshair_distance = 30
+ak_cooldown = 0.5
+shotgun_cooldown = 1.0
+rocket_cooldown = 1.6
+metadata/_edit_horizontal_guides_ = [15.0]
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CapsuleShape2D_ymup8")
+
+[node name="Camera2D" type="Camera2D" parent="." index="1"]
+zoom = Vector2(5, 5)
+
+[node name="Coyote" type="Timer" parent="Timers" index="0"]
+wait_time = 0.15
+one_shot = true
+
+[node name="JumpBuffer" type="Timer" parent="Timers" index="1"]
+wait_time = 0.25
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="Timers" index="2"]
+one_shot = true
+
+[node name="AKReload" type="Timer" parent="Timers" index="3"]
+one_shot = true
+
+[node name="ShotgunReload" type="Timer" parent="Timers" index="4"]
+one_shot = true
+
+[node name="RocketReload" type="Timer" parent="Timers" index="5"]
+one_shot = true
+
+[node name="Crosshair" type="Sprite2D" parent="." index="3"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_uwyhj")
+script = ExtResource("5_36sbw")
+
+[node name="PlayerGraph" parent="." index="4" instance=ExtResource("5_2t3gs")]
+position = Vector2(0, -7.5)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="5"]
+material = SubResource("CanvasItemMaterial_kxl61")
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_jrwab")
+texture = ExtResource("6_hjyll")
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.5

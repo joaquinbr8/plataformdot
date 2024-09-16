@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhyv4rby6h0fa"]
+
+[ext_resource type="Texture2D" uid="uid://86nrm2t0mi3d" path="res://graphics/guns/projectiles/default.png" id="1_quina"]
+[ext_resource type="Script" path="res://scenes/projectiles/bullet.gd" id="1_tjbei"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ers3g"]
+radius = 1.0
+height = 8.0
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 16
+collision_mask = 7
+script = ExtResource("1_tjbei")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_quina")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ers3g")
+
+[node name="KillTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="KillTimer" to="." method="_on_kill_timer_timeout"]
